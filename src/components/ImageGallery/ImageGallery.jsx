@@ -4,8 +4,13 @@ import ImageGalleryItem from '../ImageGallery';
 const ImageGallery = ({ pictures }) => {
   return (
     <ul className={s.ImageGallery}>
-      {pictures.map(({ id, webformatURL }) => (
-        <ImageGalleryItem key={id} id={id} webformatURL={webformatURL} />
+      {pictures.map(({ id, webformatURL, tags }) => (
+        <ImageGalleryItem
+          key={id}
+          id={id}
+          webformatURL={webformatURL}
+          tags={tags}
+        />
       ))}
     </ul>
   );

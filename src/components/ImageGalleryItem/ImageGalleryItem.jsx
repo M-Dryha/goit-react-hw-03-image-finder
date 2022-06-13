@@ -1,4 +1,4 @@
-const ImageGalleryItem = ({ webformatURL, id, tags }) => {
+const ImageGalleryItem = ({ webformatURL, tags }) => {
   return (
     <li>
       <img src={webformatURL} alt={tags} />

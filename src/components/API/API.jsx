@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const GetPicture = async (values, page) => {
+const GetPicture = async (query, page) => {
   axios.defaults.baseURL = 'https://pixabay.com/api/';
   axios.defaults.headers.post['Content-Type'] =
     'application/json; charset=utf-8';
@@ -9,9 +9,9 @@ const GetPicture = async (values, page) => {
   const MAIN_CONFIG = 'image_type=photo&orientation=horizontal&safesearch=true';
   const PAGE_CONFIG = `per_page=12&page=${page}`;
   const response = await axios.get(
-    `?key=${KEY}&q=${values}&${MAIN_CONFIG}&${PAGE_CONFIG}`
+    `?key=${KEY}&q=${query}&${MAIN_CONFIG}&${PAGE_CONFIG}`
   );
-  return response.data.hits;
+  return response.data;
   //   console.log(response.data);
 };
 
