@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
-import GetPicture from './API';
+import GetPicture from '../API';
 import ImageGallery from './ImageGallery';
+import Button from './Button';
 
 export class App extends Component {
   state = {
@@ -11,26 +12,59 @@ export class App extends Component {
   };
 
   // componentDidUpdate(_, prevState) {
-  //   if (this.state.query !== prevState.query) {
-  //     this.setState(this.fetchPicture());
+  //   if (this.state.page !== prevState.page) {
+  //     this.fetch();
+  //   }
+  // }
+  //       this.setState(state => ({
+  //         pictures: [...newPictureLoad.hits],
+  //       }));
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
   //   }
   // }
 
+  // fetch = async (values, page) => {
+  //   try {
+  //     const loadPictures = await GetPicture(values.name);
+  //     this.setState(state => ({
+  //       pictures: [...loadPictures.hits],
+  //     }));
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   fetchPicture = async values => {
     // const { query } = this.state;
+    // if (!values.name) {
+    //   alert(`jfjkfj`);
+    //   return;
+    // }
     try {
       const newPicture = await GetPicture(values.name);
-      console.log(newPicture);
+
       this.setState(state => ({
-        pictures: [...state.pictures, ...newPicture.hits],
+        // query: values.name,
+        pictures: [...newPicture.hits],
       }));
     } catch (error) {
       console.error(error);
     }
   };
 
-  // handleForSubmit = values => {
-  //   this.setState({ query: values.name });
+  handleForSubmit = values => {
+    this.setState({ query: values.name });
+  };
+
+  // loadMore = () => {
+  //   // const onButtonClick = e.target;
+  //   // const { page } = this.state;
+  //   this.setState(({ page }) => {
+  //     return { page: page + 1 };
+  //   });
+  //   console.log(this.state.page);
   // };
 
   render() {
@@ -40,16 +74,8 @@ export class App extends Component {
       <section>
         <SearchBar onSubmit={this.fetchPicture} />
 
-        {/* {pictures.length > 0 && (
-          <ul>
-            {pictures.map(({ webformatURL, tags }) => (
-              <li>
-                <img src={webformatURL} alt={tags} />
-              </li>
-            ))}
-          </ul>
-        )} */}
         {pictures.length > 0 && <ImageGallery pictures={pictures} />}
+        {pictures.length > 0 && <Button onClick={this.loadMore} />}
       </section>
     );
   }

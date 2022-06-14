@@ -1,5 +1,5 @@
 import s from './ImageGallery.module.css';
-import ImageGalleryItem from '../ImageGallery';
+import ImageGalleryItem from '../ImageGalleryItem';
 
 const ImageGallery = ({ pictures }) => {
   return (
