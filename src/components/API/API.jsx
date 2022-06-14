@@ -11,7 +11,7 @@ const GetPicture = async (query, page) => {
   const response = await axios.get(
     `?key=${KEY}&q=${query}&${MAIN_CONFIG}&${PAGE_CONFIG}`
   );
-  return response.data.hits;
+  return response.data;
   //   console.log(response.data);
 };
 
