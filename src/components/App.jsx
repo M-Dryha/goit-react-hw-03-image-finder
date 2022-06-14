@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
-import GetPicture from '../API';
+// import GetPicture from '../API';
 import ImageGallery from './ImageGallery';
-import Button from './Button';
+// import Button from './Button';
 
 export class App extends Component {
   state = {
-    pictures: [],
+    query: '',
     page: 1,
-    // query: '',
   };
 
   // componentDidUpdate(_, prevState) {
@@ -36,23 +35,23 @@ export class App extends Component {
   //   }
   // };
 
-  fetchPicture = async values => {
-    // const { query } = this.state;
-    // if (!values.name) {
-    //   alert(`jfjkfj`);
-    //   return;
-    // }
-    try {
-      const newPicture = await GetPicture(values.name);
+  // fetchPicture = async values => {
+  //   // const { query } = this.state;
+  //   // if (!values.name) {
+  //   //   alert(`jfjkfj`);
+  //   //   return;
+  //   // }
+  //   try {
+  //     const newPicture = await GetPicture(values.name);
 
-      this.setState(state => ({
-        // query: values.name,
-        pictures: [...newPicture.hits],
-      }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     this.setState(state => ({
+  //       // query: values.name,
+  //       pictures: [...newPicture.hits],
+  //     }));
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   handleForSubmit = values => {
     this.setState({ query: values.name });
@@ -68,15 +67,16 @@ export class App extends Component {
   // };
 
   render() {
-    const { pictures } = this.state;
+    const { pictures, query, page } = this.state;
     console.log(pictures);
     return (
-      <section>
-        <SearchBar onSubmit={this.fetchPicture} />
+      <>
+        <SearchBar onSubmit={this.handleForSubmit} />
+        <ImageGallery value={query} page={page} />
 
-        {pictures.length > 0 && <ImageGallery pictures={pictures} />}
-        {pictures.length > 0 && <Button onClick={this.loadMore} />}
-      </section>
+        {/* {pictures.length > 0 && <ImageGallery pictures={pictures} />} */}
+        {/* {query !== '' && <Button onClick={this.loadMore} />} */}
+      </>
     );
   }
 }
