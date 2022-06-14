@@ -20,18 +20,29 @@ export class App extends Component {
     const { query } = this.state;
     try {
       const newPicture = await GetPicture(query);
+      console.log(newPicture);
       this.setState(state => ({
-        pictures: [...state.pictures, newPicture],
+        pictures: [...state.pictures, ...newPicture],
       }));
     } catch (error) {
       console.error(error);
     }
   };
 
+  // fetchPicture(query) {
+  //   const { query } = this.state;
+
+  //   GetPicture(query)
+  //     .then(this.dataChange)
+  //     .catch(error =>
+  //    console.log(error)
+  //   )
+
   handleForSubmit = values => {
     this.setState({ query: values.name });
-    console.log(this.state.query);
   };
+
+  //   dataChange
 
   // componentDidUpdate(prevProps, prevState) {
   //   async componentDidUpdate(prevProps, prevState) {
@@ -41,7 +52,8 @@ export class App extends Component {
   // }
   render() {
     const { pictures } = this.state;
-    console.log(this.state.pictures);
+
+    console.log(pictures);
     return (
       <>
         <SearchBar onSubmit={this.handleForSubmit} />
