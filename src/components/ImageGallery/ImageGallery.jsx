@@ -110,7 +110,7 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { status, error, showModal, pictures } = this.state;
+    const { status, showModal } = this.state;
 
     if (status === 'pending') {
       return (
