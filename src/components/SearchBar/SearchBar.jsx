@@ -3,10 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import s from './Searchbar.module.css';
 
-//  import API from '../API';
-
-// trim()
-
 const SearchBar = ({ onSubmit }) => {
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -42,6 +38,7 @@ const SearchBar = ({ onSubmit }) => {
             className={s.SearchFormInput}
             placeholder="Search images and photos"
           />
+
           <ErrorMessage component="div" name="name" />
         </Form>
       </Formik>
