@@ -25,6 +25,7 @@ class ImageGallery extends Component {
       this.fetchPicture();
     }
   }
+
   fetchPicture = async () => {
     try {
       const normalizeValue = this.props.value;
