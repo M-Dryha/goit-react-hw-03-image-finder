@@ -15,6 +15,7 @@ class ImageGallery extends Component {
     showModal: false,
     imageId: null,
   };
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.value !== this.props.value) {
       this.setState({ pictures: [], status: 'pending' });
