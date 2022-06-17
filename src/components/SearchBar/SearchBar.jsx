@@ -1,4 +1,3 @@
-// import React, { Component } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import s from './Searchbar.module.css';

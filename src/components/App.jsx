@@ -1,82 +1,122 @@
 import React, { Component } from 'react';
+import { Oval } from 'react-loader-spinner';
 import SearchBar from './SearchBar';
-// import GetPicture from '../API';
+import GetPicture from './../API';
+import Button from './Button';
 import ImageGallery from './ImageGallery';
-// import Button from './Button';
+import Modal from './Modal';
 
 export class App extends Component {
   state = {
     query: '',
     page: 1,
+    pictures: [],
+    status: 'idle',
+    error: null,
+    showModal: false,
+    imageId: null,
+    bigImg: null,
+    tags: null,
   };
 
-  // componentDidUpdate(_, prevState) {
-  //   if (this.state.page !== prevState.page) {
-  //     this.fetch();
-  //   }
-  // }
-  //       this.setState(state => ({
-  //         pictures: [...newPictureLoad.hits],
-  //       }));
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
-
-  // fetch = async (values, page) => {
-  //   try {
-  //     const loadPictures = await GetPicture(values.name);
-  //     this.setState(state => ({
-  //       pictures: [...loadPictures.hits],
-  //     }));
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // fetchPicture = async values => {
-  //   // const { query } = this.state;
-  //   // if (!values.name) {
-  //   //   alert(`jfjkfj`);
-  //   //   return;
-  //   // }
-  //   try {
-  //     const newPicture = await GetPicture(values.name);
-
-  //     this.setState(state => ({
-  //       // query: values.name,
-  //       pictures: [...newPicture.hits],
-  //     }));
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.query !== this.state.query ||
+      prevState.page !== this.state.page
+    ) {
+      this.fetchPicture();
+      // window.scrollBy({
+      //   top: document.body.clientHeight,
+      //   behavior: 'smooth',
+      // });
+    }
+  }
 
   handleForSubmit = values => {
-    this.setState({ query: values.name });
+    this.setState({
+      query: values.name,
+      pictures: [],
+      status: 'pending',
+    });
   };
 
-  // loadMore = () => {
-  //   // const onButtonClick = e.target;
-  //   // const { page } = this.state;
-  //   this.setState(({ page }) => {
-  //     return { page: page + 1 };
-  //   });
-  //   console.log(this.state.page);
-  // };
+  fetchPicture = async () => {
+    try {
+      const normalizeValue = this.state.query;
+      const newPicture = await GetPicture(normalizeValue, this.state.page);
+      const { pictures } = this.state;
+
+      this.setState(state => ({
+        status: 'resolved',
+        pictures: [...pictures, ...newPicture.hits],
+      }));
+
+      if (newPicture.totalHits === 0) {
+        this.setState({ status: 'rejected' });
+        return;
+      }
+    } catch (error) {
+      this.setState({
+        status: 'rejected',
+      });
+    }
+  };
+
+  loadMore = () => {
+    this.setState(({ page }) => {
+      return { page: page + 1 };
+    });
+
+    console.log(this.state.page);
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  findPicture = imageId => {
+    const findModalImg = this.state.pictures.find(p => p.id === imageId);
+    this.setState({
+      bigImg: findModalImg.webformatURL,
+      tags: findModalImg.tags,
+    });
+  };
 
   render() {
-    const { pictures, query, page } = this.state;
-    console.log(pictures);
-    return (
-      <>
-        <SearchBar onSubmit={this.handleForSubmit} />
-        <ImageGallery value={query} page={page} />
+    const { pictures, query, page, status, showModal } = this.state;
 
-        {/* {pictures.length > 0 && <ImageGallery pictures={pictures} />} */}
-        {/* {query !== '' && <Button onClick={this.loadMore} />} */}
-      </>
+    return (
+      <div className="App">
+        <SearchBar onSubmit={this.handleForSubmit} />
+        {status === 'rejected' && (
+          <div className="Notification">Ooops, no data for "{query}" =(</div>
+        )}
+
+        {status === 'pending' && (
+          <div className="Loader">
+            <Oval color="#00BFFF" height={80} width={80} />
+          </div>
+        )}
+
+        <ImageGallery
+          name="gallery"
+          showModal={showModal}
+          value={query}
+          page={page}
+          onClick={this.findPicture}
+          pictures={pictures}
+          toggleModal={this.toggleModal}
+        />
+        {pictures.length > 0 && <Button onClick={this.loadMore} />}
+
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <img src={this.state.bigImg} alt={this.state.tags} />
+          </Modal>
+        )}
+      </div>
     );
   }
 }
