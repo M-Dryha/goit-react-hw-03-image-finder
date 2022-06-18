@@ -19,6 +19,15 @@ export class App extends Component {
     tags: null,
     totalPictures: null,
   };
+  // SmoothScrolling() {
+  //   const { height: cardHeight } = document
+  //     .querySelector('#root')
+  //     .firstElementChild.getBoundingClientRect();
+  //   window.scrollBy({
+  //     top: cardHeight * 0.425,
+  //     behavior: 'smooth',
+  //   });
+  // }
 
   componentDidUpdate(_, prevState) {
     if (
@@ -26,11 +35,14 @@ export class App extends Component {
       prevState.page !== this.state.page
     ) {
       this.fetchPicture();
-      // window.scrollBy({
-      //   top: document.body.clientHeight,
-      //   behavior: 'smooth',
-      // });
     }
+    // if (this.state.page > 1) {
+    //   setTimeout(() => this.SmoothScrolling(), 250);
+    // }
+    window.scrollBy({
+      top: document.body.clientHeight,
+      behavior: 'smooth',
+    });
   }
 
   handleForSubmit = values => {
