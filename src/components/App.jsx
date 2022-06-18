@@ -17,6 +17,7 @@ export class App extends Component {
     imageId: null,
     bigImg: null,
     tags: null,
+    totalPictures: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -37,6 +38,7 @@ export class App extends Component {
       query: values.name,
       pictures: [],
       status: 'pending',
+      page: 1,
     });
   };
 
@@ -49,6 +51,7 @@ export class App extends Component {
       this.setState(state => ({
         status: 'resolved',
         pictures: [...pictures, ...newPicture.hits],
+        totalPictures: newPicture.totalHits,
       }));
 
       if (newPicture.totalHits === 0) {
@@ -66,8 +69,6 @@ export class App extends Component {
     this.setState(({ page }) => {
       return { page: page + 1 };
     });
-
-    console.log(this.state.page);
   };
 
   toggleModal = () => {
@@ -82,10 +83,11 @@ export class App extends Component {
       bigImg: findModalImg.webformatURL,
       tags: findModalImg.tags,
     });
+    this.toggleModal();
   };
 
   render() {
-    const { pictures, query, page, status, showModal } = this.state;
+    const { pictures, query, status, showModal, totalPictures } = this.state;
 
     return (
       <div className="App">
@@ -101,15 +103,13 @@ export class App extends Component {
         )}
 
         <ImageGallery
-          name="gallery"
           showModal={showModal}
-          value={query}
-          page={page}
           onClick={this.findPicture}
           pictures={pictures}
-          toggleModal={this.toggleModal}
         />
-        {pictures.length > 0 && <Button onClick={this.loadMore} />}
+        {pictures.length > 0 && totalPictures !== pictures.length && (
+          <Button onClick={this.loadMore} />
+        )}
 
         {showModal && (
           <Modal onClose={this.toggleModal}>

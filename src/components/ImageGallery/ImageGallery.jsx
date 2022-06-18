@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import s from './ImageGallery.module.css';
 import ImageGalleryItem from '../ImageGalleryItem';
 
-const ImageGallery = ({ pictures, onClick, showModal, toggleModal }) => {
+const ImageGallery = ({ pictures, onClick, showModal }) => {
   return (
     <section>
       <ul className={s.ImageGallery}>
@@ -12,7 +12,6 @@ const ImageGallery = ({ pictures, onClick, showModal, toggleModal }) => {
             id={id}
             webformatURL={webformatURL}
             tags={tags}
-            toggleModal={() => toggleModal()}
             onClick={onClick}
             showModal={showModal}
           />
@@ -23,7 +22,6 @@ const ImageGallery = ({ pictures, onClick, showModal, toggleModal }) => {
 };
 
 ImageGallery.propTypes = {
-  toggleModal: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   showModal: PropTypes.bool.isRequired,
   pictures: PropTypes.arrayOf(

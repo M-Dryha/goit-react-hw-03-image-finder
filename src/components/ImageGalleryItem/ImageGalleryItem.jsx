@@ -1,14 +1,7 @@
 import s from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
-const ImageGalleryItem = ({
-  webformatURL,
-  tags,
-  onClick,
-  id,
-  onClose,
-  toggleModal,
-}) => {
+const ImageGalleryItem = ({ webformatURL, tags, onClick, id }) => {
   return (
     <li className={s.ImageGalleryItem}>
       <img
@@ -18,11 +11,6 @@ const ImageGalleryItem = ({
         className={s.ImageGalleryItemImage}
         onClick={() => {
           onClick(id);
-          console.log(id);
-          toggleModal();
-        }}
-        onClose={() => {
-          onClose();
         }}
       />
     </li>
@@ -34,6 +22,5 @@ ImageGalleryItem.propTypes = {
   onClick: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   onClose: PropTypes.func,
-  toggleModal: PropTypes.func.isRequired,
 };
 export default ImageGalleryItem;

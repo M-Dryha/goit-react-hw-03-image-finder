@@ -14,7 +14,6 @@ const SearchBar = ({ onSubmit }) => {
     console.log(values);
 
     await onSubmit(values);
-    actions.resetForm();
   };
 
   return (
